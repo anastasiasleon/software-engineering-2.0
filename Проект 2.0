@@ -5,3 +5,6 @@ git commit -m "Initial commit: Image classification app with Streamlit and tests
 git branch -M main 
 git remote add origin https://github.com/anastasiasleon/software-engineering-2.0.git
 git push -u origin mainм
+git add .github/workflows/ci.yml
+git commit -m "Add GitHub Actions CI pipeline"
+git push origin main
