@@ -8,3 +8,9 @@ git push -u origin mainм
 git add .github/workflows/ci.yml
 git commit -m "Add GitHub Actions CI pipeline"
 git push origin main
+git add test_app.py
+git commit -m "Fix: Use patch for mocking model components in tests"
+git push origin mainм
+git add app.py
+git commit -m "Fix: Replace ViTFeatureExtractor with ViTImageProcessor"
+git push origin main
