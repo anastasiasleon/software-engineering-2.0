@@ -1,0 +1,7 @@
+echo "# software-engineering-2.0" >> README.md 
+git init 
+git add . 
+git commit -m "Initial commit: Image classification app with Streamlit and testsм" 
+git branch -M main 
+git remote add origin https://github.com/anastasiasleon/software-engineering-2.0.git
+git push -u origin mainм
