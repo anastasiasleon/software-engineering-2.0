@@ -1,13 +1,13 @@
 import streamlit as st
 from PIL import Image
-from transformers import ViTFeatureExtractor, ViTForImageClassification
+from transformers import ViTImageProcessor, ViTForImageClassification
 import torch
 
-# Загрузка предварительно обученной модели и экстрактора признаков
+# Загрузка предварительно обученной модели и процессора изображений
 @st.cache_resource
 def load_model():
     model_name = "google/vit-base-patch16-224"
-    feature_extractor = ViTFeatureExtractor.from_pretrained(model_name)
+    feature_extractor = ViTImageProcessor.from_pretrained(model_name)
     model = ViTForImageClassification.from_pretrained(model_name)
     return feature_extractor, model
 
