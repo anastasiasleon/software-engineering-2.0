@@ -1,5 +1,5 @@
 import pytest
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 from PIL import Image
 import torch
 from app import classify_image, load_model
@@ -27,24 +27,19 @@ def mock_model_components():
 def test_classify_image_mocked(mock_model_components):
     mock_feature_extractor, mock_model = mock_model_components
 
-    # Переопределяем функции в app.py для использования моков
-    # Это немного хакерский способ, в реальном проекте лучше использовать инъекцию зависимостей или патчинг
-    # Но для простоты примера, это сработает.
-    global feature_extractor, model
-    feature_extractor = mock_feature_extractor
-    model = mock_model
+    with patch('app.feature_extractor', new=mock_feature_extractor):
+        with patch('app.model', new=mock_model):
+            # Создаем фиктивное изображение
+            dummy_image = Image.new('RGB', (224, 224), color = 'red')
 
-    # Создаем фиктивное изображение
-    dummy_image = Image.new('RGB', (224, 224), color = 'red')
+            # Выполняем классификацию
+            predicted_label = classify_image(dummy_image)
 
-    # Выполняем классификацию
-    predicted_label = classify_image(dummy_image)
+            # Проверяем, что функция вернула ожидаемый результат
+            assert predicted_label == "dog"
 
-    # Проверяем, что функция вернула ожидаемый результат
-    assert predicted_label == "dog"
+            # Проверяем, что экстрактор признаков был вызван
+            mock_feature_extractor.assert_called_once_with(images=dummy_image, return_tensors="pt")
 
-    # Проверяем, что экстрактор признаков был вызван
-    mock_feature_extractor.assert_called_once_with(images=dummy_image, return_tensors="pt")
-
-    # Проверяем, что модель была вызвана
-    mock_model.assert_called_once()
+            # Проверяем, что модель была вызвана
+            mock_model.assert_called_once()
