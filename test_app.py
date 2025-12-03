@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import MagicMock, patch
 from PIL import Image
 import torch
-from app import classify_image, load_model
+from app import classify_image, load_model, predict
 
 # Мок для модели и экстрактора признаков
 @pytest.fixture
@@ -43,3 +43,25 @@ def test_classify_image_mocked(mock_model_components):
 
             # Проверяем, что модель была вызвана
             mock_model.assert_called_once()
+
+# Mock image for testing
+def create_test_image():
+    return Image.new('RGB', (224, 224), color = 'red')
+
+# Ensure the model and feature extractor can be loaded
+def test_load_model():
+    feature_extractor, model = load_model()
+    assert feature_extractor is not None
+    assert model is not None
+
+# Test the predict function with a dummy image
+def test_predict_function():
+    image = create_test_image()
+    # The exact prediction might vary, but it should return a string
+    prediction = predict(image)
+    assert isinstance(prediction, str)
+    assert len(prediction) > 0
+
+# Further tests could involve specific image inputs and expected outputs
+# For example, using a known image of a cat and asserting the prediction is 'cat'
+# This would require more complex setup with actual image files and model knowledge.
